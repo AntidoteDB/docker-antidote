@@ -12,6 +12,8 @@ ENV SHORT_NAME "false"
 ENV ANTIDOTE_REPO "https://github.com/AntidoteDB/antidote.git"
 # TARGET can be a branch name or release tag
 ENV ANTIDOTE_REPO_TARGET "master"
+# SRC_DIR: path to directory containing recipes required files.
+ENV SRC_DIR "./latest"
 
 RUN set -xe \
     && apt-get update \
@@ -24,8 +26,8 @@ RUN set -xe \
     && sed -e '$i,{kernel, [{inet_dist_listen_min, 9100}, {inet_dist_listen_max, 9100}]}' /usr/src/antidote/_build/default/rel/antidote/releases/0.0.2/sys.config > /opt/antidote/releases/0.0.2/sys.config \
     && rm -rf /usr/src/antidote /var/lib/apt/lists/*
 
-ADD ./start_and_attach.sh /opt/antidote/
-ADD ./entrypoint.sh /
+ADD $SRC_DIR/start_and_attach.sh /opt/antidote/
+ADD $SRC_DIR/entrypoint.sh /
 
 RUN chmod a+x /opt/antidote/start_and_attach.sh \
     && chmod a+x /entrypoint.sh
