@@ -1,4 +1,4 @@
-# Getting started locally
+# Getting started
 
 ## Prerequisites
 
