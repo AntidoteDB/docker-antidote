@@ -10,25 +10,25 @@ ENV PLATFORM_DATA_DIR "data"
 ENV NODE_NAME "antidote@127.0.0.1"
 ENV SHORT_NAME "false"
 ENV ANTIDOTE_REPO "https://github.com/AntidoteDB/antidote.git"
-ENV ANTIDOTE_BRANCH "master"
+# TARGET can be a branch name or release tag
+ENV ANTIDOTE_REPO_TARGET "master"
 
 RUN set -xe \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends git openssl ca-certificates \
-  && cd /usr/src \
-  && git clone $ANTIDOTE_REPO \
-  && cd antidote \
-  && git checkout $ANTIDOTE_BRANCH \
-  && make rel \
-  && cp -R _build/default/rel/antidote /opt/ \
-  && sed -e '$i,{kernel, [{inet_dist_listen_min, 9100}, {inet_dist_listen_max, 9100}]}' /usr/src/antidote/_build/default/rel/antidote/releases/0.0.2/sys.config > /opt/antidote/releases/0.0.2/sys.config \
-  && rm -rf /usr/src/antidote /var/lib/apt/lists/*
+    && apt-get update \
+    && apt-get install -y --no-install-recommends git openssl ca-certificates \
+    && cd /usr/src \
+    && git clone -b "$ANTIDOTE_REPO_TARGET" --single-branch --depth 1 $ANTIDOTE_REPO \
+    && cd antidote \
+    && make rel \
+    && cp -R _build/default/rel/antidote /opt/ \
+    && sed -e '$i,{kernel, [{inet_dist_listen_min, 9100}, {inet_dist_listen_max, 9100}]}' /usr/src/antidote/_build/default/rel/antidote/releases/0.0.2/sys.config > /opt/antidote/releases/0.0.2/sys.config \
+    && rm -rf /usr/src/antidote /var/lib/apt/lists/*
 
 ADD ./start_and_attach.sh /opt/antidote/
 ADD ./entrypoint.sh /
 
 RUN chmod a+x /opt/antidote/start_and_attach.sh \
-  && chmod a+x /entrypoint.sh
+    && chmod a+x /entrypoint.sh
 
 # Distributed Erlang Port Mapper
 EXPOSE 4369
