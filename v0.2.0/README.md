@@ -16,10 +16,10 @@ This should fetch the Antidote image automatically. For updating to the latest v
 
 ## Building the image locally
 
-For building the Docker image on your local machine, use the following command (must be executed from inside latest directory)
+For building the Docker image on your local machine, use the following command (must be executed from the root dir of this repository)
 
 ```
-docker build -f Dockerfile -t antidotedb-local-build:0.2.0 .
+docker build -f ./v0.2.0/Dockerfile -t antidotedb-local-build:0.2.0 .
 ```
 
 Then you can run it using:
