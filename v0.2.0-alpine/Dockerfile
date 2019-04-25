@@ -12,8 +12,6 @@ ENV SHORT_NAME "false"
 ENV ANTIDOTE_REPO "https://github.com/ilyasToumlilt/antidote.git"
 # TARGET can be a branch name or release tag
 ENV ANTIDOTE_REPO_TARGET "v0.2.0"
-# SRC_DIR: path to directory containing recipes required files.
-ENV SRC_DIR "./v0.2.0-alpine"
 
 RUN set -xe \
   && apk --no-cache --update upgrade busybox musl \
@@ -28,8 +26,8 @@ RUN set -xe \
   && apk del git curl perl \
   && rm -rf /tmp/antidote /var/lib/apt/lists/*
 
-ADD $SRC_DIR/start_and_attach.sh /opt/antidote/
-ADD $SRC_DIR/entrypoint.sh /
+ADD ./start_and_attach.sh /opt/antidote/
+ADD ./entrypoint.sh /
 
 RUN chmod a+x /opt/antidote/start_and_attach.sh \
   && chmod a+x /entrypoint.sh

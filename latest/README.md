@@ -7,7 +7,6 @@
 ## Starting a local node
 
 Start a local node with the command
-
 ```
 docker run -d --name antidote -p "8087:8087" antidotedb/antidote:latest
 ```
@@ -17,13 +16,11 @@ This should fetch the Antidote image automatically. For updating to the latest v
 ## Building the image locally
 
 For building the Docker image on your local machine, use the following command (must be executed from inside latest directory)
-
 ```
-docker build -f ./latest/Dockerfile -t antidotedb-local-build:latest .
+docker build -f Dockerfile -t antidotedb-local-build:latest .
 ```
 
 Then you can run it using:
-
 ```
 docker run -d --name antidote -p "8087:8087" antidotedb-local-build:latest
 ```
