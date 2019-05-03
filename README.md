@@ -15,12 +15,12 @@ The AntidoteDB images come in many flavors, each designed for a specific use cas
 - `antidotedb:<release>-alpine`: This variant, available for each official release, is recommended when final image size being as small as possible is desired. The main caveat to note is that it use [musl libc](http://www.musl-libc.org/) instead of [glibc and friends](http://www.etalabs.net/compare_libcs.html), so certain software might run into issues depending on the depth of their libs requirements. However, most software does not have an issue with this, so this variant is usually a very safe choice. See [this Hacker News comment thread](https://news.ycombinator.com/item?id=10782897) for more discussion of the issues that might arise and some pro/con comparisons of using Alpine-based images.
 
 Supported tags and respective `Dockefile` github links:
-- [`latest`](https://github.com/ilyasToumlilt/docker-antidote/blob/master/latest/Dockerfile): the most recent AntidoteDB version (Unstable).
-- [`0.2.0`, `stable`](https://github.com/ilyasToumlilt/docker-antidote/blob/master/v0.2.0/Dockerfile): the most recent stable release (recommended).
-- [`0.2.0-alpine`, `alpine`](https://github.com/ilyasToumlilt/docker-antidote/blob/master/v0.2.0-alpine/Dockerfile): the most recent lightweight alpine release.
-- [`0.1.1`](https://github.com/ilyasToumlilt/docker-antidote/blob/master/v0.1.1/Dockerfile)
-- [`0.1.1-alpine`](https://github.com/ilyasToumlilt/docker-antidote/blob/master/v0.1.1-alpine/Dockerfile)
-- [`0.1.0`](https://github.com/ilyasToumlilt/docker-antidote/blob/master/v0.1.0/Dockerfile)
+- [`latest`](https://github.com/AntidoteDB/docker-antidote/blob/master/latest/Dockerfile): the most recent AntidoteDB version (Unstable).
+- [`0.2.0`, `stable`](https://github.com/AntidoteDB/docker-antidote/blob/master/v0.2.0/Dockerfile): the most recent stable release (recommended).
+- [`0.2.0-alpine`, `alpine`](https://github.com/AntidoteDB/docker-antidote/blob/master/v0.2.0-alpine/Dockerfile): the most recent lightweight alpine release.
+- [`0.1.1`](https://github.com/AntidoteDB/docker-antidote/blob/master/v0.1.1/Dockerfile)
+- [`0.1.1-alpine`](https://github.com/AntidoteDB/docker-antidote/blob/master/v0.1.1-alpine/Dockerfile)
+- [`0.1.0`](https://github.com/AntidoteDB/docker-antidote/blob/master/v0.1.0/Dockerfile)
 
 ## Getting started (for stable recommended version)
 
@@ -32,16 +32,16 @@ Supported tags and respective `Dockefile` github links:
 
 Start a local node with the command
 ```
-docker run -d --name antidote -p "8087:8087" itoumlilt/antidotedb:stable
+docker run -d --name antidote -p "8087:8087" antidotedb/antidote:stable
 ```
 
-This should fetch the Antidote image automatically. For updating to the latest version use the command `docker pull itoumlilt/antidotedb:stable`.
+This should fetch the Antidote image automatically. For updating to the latest version use the command `docker pull antidotedb/antidote:stable`.
 
 ### Building the image locally
 
 For building the Docker image on your local machine, use the following commands:
 ```
-git clone https://github.com/ilyasToumlilt/docker-antidote
+git clone https://github.com/AntidoteDB/docker-antidote
 cd docker-antidote/v0.2.0
 docker build -f Dockerfile -t antidotedb-local-build:0.2.0 .
 ```
@@ -80,5 +80,5 @@ As with all Docker images, these likely also contain other software which may be
 As for any pre-built image usage, it is the image user's responsibility to ensure that any use of this image complies with any relevant licenses for all software contained within.
 
 [AntidoteDB-website]: https://www.antidotedb.eu/
-[AntidoteDB-dockerhub-link]: https://hub.docker.com/r/itoumlilt/antidotedb
+[AntidoteDB-dockerhub-link]: https://hub.docker.com/r/antidotedb/antidote
 [AntidoteDB-github-releases-link]: https://github.com/AntidoteDB/antidote/releases
