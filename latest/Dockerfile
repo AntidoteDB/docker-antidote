@@ -1,5 +1,7 @@
 FROM erlang:21
 
+LABEL maintainer="ilyas@toumlilt.com"
+
 ENV HANDOFF_PORT "8099"
 ENV PB_PORT "8087"
 ENV PB_IP "0.0.0.0"
