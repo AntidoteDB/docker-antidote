@@ -13,7 +13,7 @@ if [[ ${NPROC} -ge 2 ]]; then
   done
   echo "✔"
 
-  tail -f /opt/antidote/log/console.log &
+  tail -F /opt/antidote/log/console.log &
   wait ${!}
 
 else
