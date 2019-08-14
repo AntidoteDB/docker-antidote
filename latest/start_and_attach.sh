@@ -5,15 +5,15 @@ NPROC=$(nproc)
 if [[ ${NPROC} -ge 2 ]]; then
   trap "echo 'Shutting down' && /opt/antidote/bin/env stop" TERM
   /opt/antidote/bin/env start &
-  
+
+  echo -n "Waiting for Antidote logger..."
   while [ ! -f /opt/antidote/log/console.log ]
   do
-	  echo -n '.'
 	  sleep 1
   done
-  echo '.'
+  echo "✔"
 
-  tail -f /opt/antidote/log/console.log &
+  tail -F /opt/antidote/log/console.log &
   wait ${!}
 
 else
