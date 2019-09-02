@@ -26,11 +26,9 @@ RUN set -xe \
     && sed -e '$i,{kernel, [{inet_dist_listen_min, 9100}, {inet_dist_listen_max, 9100}]}' /usr/src/antidote/_build/default/rel/antidote/releases/0.0.2/sys.config > /opt/antidote/releases/0.0.2/sys.config \
     && rm -rf /usr/src/antidote /var/lib/apt/lists/*
 
-ADD ./start_and_attach.sh /opt/antidote/
 ADD ./entrypoint.sh /
 
-RUN chmod a+x /opt/antidote/start_and_attach.sh \
-    && chmod a+x /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
 
 # Distributed Erlang Port Mapper
 EXPOSE 4369
@@ -44,4 +42,4 @@ VOLUME /opt/antidote/data
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/opt/antidote/start_and_attach.sh"]
+CMD ["/opt/antidote/bin/env", "foreground"]
