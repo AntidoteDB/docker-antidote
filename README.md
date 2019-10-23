@@ -64,6 +64,9 @@ You can connect to the console of a local node typing the following:
 docker exec -it antidote /opt/antidote/bin/env attach
 ```
 
+### Building Antidote locally from the source code
+Please look at the [dedicated README doc](https://github.com/AntidoteDB/docker-antidote/tree/master/local-build)
+
 ## Quick reference
 
 - **AntidoteDB**: [Official website][AntidoteDB-website], [Quick start guide](https://antidotedb.gitbook.io/documentation/) or [The AntidoteDB Community Slack](https://antidotedb.slack.com/).
