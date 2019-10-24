@@ -12,16 +12,7 @@ If you want to use AntidoteDB in production or if you need a stable Docker image
 ## Building the image locally
 
 For building the Docker image on your local machine, use the following command (must be executed from the antidote.git root directory)
-```
-tmpdir=`mktemp -d` 
-wget "https://raw.githubusercontent.com/AntidoteDB/docker-antidote/master/local-build/Dockerfile" -O "$$tmpdir/Dockerfile"
-wget "https://raw.githubusercontent.com/AntidoteDB/docker-antidote/master/local-build/entrypoint.sh" -O "$$tmpdir/entrypoint.sh"
-wget "https://raw.githubusercontent.com/AntidoteDB/docker-antidote/master/local-build/start_and_attach.sh" -O "$$tmpdir/start_and_attach.sh"
-cd $$tmpdir
-docker build -f Dockerfile -t antidotedb:local-build .
-```
 
-or simply 
 ```
 make docker-build
 ```

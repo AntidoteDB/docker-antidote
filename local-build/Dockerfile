@@ -2,6 +2,9 @@ FROM erlang:21
 
 LABEL maintainer="ilyas@toumlilt.com"
 
+ARG DOCKERFILES
+RUN ["/bin/bash", "-c", ": ${DOCKERFILES:?Build argument DOCKERFILES needs to be set and not null.}"]
+
 ENV HANDOFF_PORT "8099"
 ENV PB_PORT "8087"
 ENV PB_IP "0.0.0.0"
@@ -12,7 +15,6 @@ ENV PLATFORM_DATA_DIR "data"
 ENV NODE_NAME "antidote@127.0.0.1"
 ENV SHORT_NAME "false"
 
-ENV SRC_SCRIPTS_DIR "./Dockerfiles"
 ENV ANTIDOTE_BUILD_DIR "/usr/src/antidote"
 ENV ANTIDOTE_RUNTIME_DIR "/opt"
 
@@ -27,8 +29,8 @@ RUN set -xe \
     && sed -e '$i,{kernel, [{inet_dist_listen_min, 9100}, {inet_dist_listen_max, 9100}]}' ${ANTIDOTE_BUILD_DIR}/_build/default/rel/antidote/releases/0.0.2/sys.config > ${ANTIDOTE_RUNTIME_DIR}/antidote/releases/0.0.2/sys.config \
     && rm -rf ${ANTIDOTE_BUILD_DIR} /var/lib/apt/lists/*
 
-ADD ${SRC_SCRIPTS_DIR}/start_and_attach.sh ${ANTIDOTE_RUNTIME_DIR}/antidote/
-ADD ${SRC_SCRIPTS_DIR}/entrypoint.sh /
+ADD ${DOCKERFILES}/start_and_attach.sh ${ANTIDOTE_RUNTIME_DIR}/antidote/
+ADD ${DOCKERFILES}/entrypoint.sh /
 
 RUN chmod a+x ${ANTIDOTE_RUNTIME_DIR}/antidote/start_and_attach.sh \
     && chmod a+x /entrypoint.sh
