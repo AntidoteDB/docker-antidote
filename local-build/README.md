@@ -26,6 +26,11 @@ or:
 make docker-run
 ```
 
+To remove de Docker image and scripts directories (that will be created inside your Antidote local directory, for Docker dir scope reasons), you can use:
+```
+make docker-clean
+```
+
 ## Using the local node
 
 Wait until Antidote is ready. The current log can be inspected with `docker logs antidote`. Wait until the log message `Application antidote started on node 'antidote@127.0.0.1'` appears.
