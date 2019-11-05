@@ -8,22 +8,10 @@
 
 Start a local node with the command
 ```
-docker run -d --name antidote -p "8087:8087" antidotedb/antidote:latest
+docker run -d --name antidote -p "8087:8087" antidotedb/antidote:0.4.0
 ```
 
-This should fetch the Antidote image automatically. For updating to the latest version use the command `docker pull antidotedb/antidote:latest`.
-
-## Building the image locally
-
-For building the Docker image on your local machine, use the following command (must be executed from inside latest directory)
-```
-docker build -f Dockerfile -t antidotedb-local-build:latest .
-```
-
-Then you can run it using:
-```
-docker run -d --name antidote -p "8087:8087" antidotedb-local-build:latest
-```
+This should fetch the Antidote image automatically. 
 
 ## Using the local node
 
@@ -35,5 +23,5 @@ Antidote should now be running on port 8087 on localhost.
 
 You can connect to the console of a local node typing the following:
 ```
-docker exec -it antidote /opt/antidote/bin/env attach
+docker exec -it antidote /antidote/bin/antidote remote_console
 ```

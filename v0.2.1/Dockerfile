@@ -10,7 +10,7 @@ LABEL maintainer="ilyas@toumlilt.com"
 ENV ANTIDOTE_REPO "https://github.com/AntidoteDB/antidote"
 
 # TARGET can be a branch name or release tag
-ENV ANTIDOTE_REPO_TARGET "antidote-configuration"
+ENV ANTIDOTE_REPO_TARGET "v0.2.1"
 
 # clone into antidote-src directory
 RUN git clone -b "${ANTIDOTE_REPO_TARGET}" --single-branch --depth 1 "${ANTIDOTE_REPO}" /antidote-src
@@ -18,7 +18,7 @@ RUN cd /antidote-src && make rel
 RUN cp -R /antidote-src/_build/default/rel/antidote /antidote/
 RUN rm -rf antidote-src
 # use short names instead of fully qualified names
-RUN sed -ie 's/-name/-sname/' /antidote/releases/0.4.0/vm.args.src
+RUN sed -ie 's/-name/-sname/' /antidote/releases/0.2.1/vm.args.src
 
 # Configurable antidote parameters
 
