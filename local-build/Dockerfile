@@ -2,49 +2,91 @@ FROM erlang:21
 
 LABEL maintainer="ilyas@toumlilt.com"
 
-ARG DOCKERFILES
-RUN ["/bin/bash", "-c", ": ${DOCKERFILES:?Build argument DOCKERFILES needs to be set and not null.}"]
+# --------
+# Setup
+# --------
 
+ENV SRC_DIR "/usr/src/antidote"
+
+# copy antidote directory
+COPY . ${SRC_DIR}
+# make release
+RUN cd ${SRC_DIR} && make rel
+# copy release
+RUN cp -R ${SRC_DIR}/_build/default/rel/antidote /antidote/
+# delete source
+RUN rm -rf ${SRC_DIR}
+# use short names instead of fully qualified names
+RUN sed -ie 's/-name/-sname/' /antidote/releases/0.2.1/vm.args.src
+
+# Configurable antidote parameters
+
+# --------
+# Network
+# --------
+
+# intra-dc
 ENV HANDOFF_PORT "8099"
+
+# inter-dc ports
+ENV LOGREADER_PORT "8085"
+ENV PBSUB_PORT "8086"
+
+# public client port
 ENV PB_PORT "8087"
 ENV PB_IP "0.0.0.0"
-ENV PBSUB_PORT "8086"
-ENV LOGREADER_PORT "8085"
-ENV RING_STATE_DIR "data/ring"
-ENV PLATFORM_DATA_DIR "data"
-ENV NODE_NAME "antidote@127.0.0.1"
-ENV SHORT_NAME "false"
 
-ENV ANTIDOTE_BUILD_DIR "/usr/src/antidote"
-ENV ANTIDOTE_RUNTIME_DIR "/opt"
+# metrics
+ENV METRICS_PORT "3001"
 
-COPY . $ANTIDOTE_BUILD_DIR
+# Erlang configuration
 
-RUN set -xe \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends git openssl ca-certificates \
-    && cd $ANTIDOTE_BUILD_DIR \
-    && make rel \
-    && cp -R ${ANTIDOTE_BUILD_DIR}/_build/default/rel/antidote $ANTIDOTE_RUNTIME_DIR/ \
-    && sed -e '$i,{kernel, [{inet_dist_listen_min, 9100}, {inet_dist_listen_max, 9100}]}' ${ANTIDOTE_BUILD_DIR}/_build/default/rel/antidote/releases/0.0.2/sys.config > ${ANTIDOTE_RUNTIME_DIR}/antidote/releases/0.0.2/sys.config \
-    && rm -rf ${ANTIDOTE_BUILD_DIR} /var/lib/apt/lists/*
+# (Short) Name of the node and cookie
+# host name should be the container_name of the docker container
+ENV NODE_NAME "antidote@antidote"
+ENV COOKIE "secret"
 
-ADD ${DOCKERFILES}/start_and_attach.sh ${ANTIDOTE_RUNTIME_DIR}/antidote/
-ADD ${DOCKERFILES}/entrypoint.sh /
+# Expose protocol buffer client port
+EXPOSE 8087
 
-RUN chmod a+x ${ANTIDOTE_RUNTIME_DIR}/antidote/start_and_attach.sh \
-    && chmod a+x /entrypoint.sh
+# --------
+# Other Configuration
+# --------
 
-# Distributed Erlang Port Mapper
-EXPOSE 4369
-# Ports for Antidote
-EXPOSE 8085 8086 8087 8099
+# where the logs and data are stored and exposed
+ENV ROOT_DIR_PREFIX "/antidote-data/"
+ENV DATA_DIR_PREFIX "data/"
+ENV LOGGER_DIR_PREFIX "log/"
 
-# Antidote RPC
-EXPOSE 9100
 
-VOLUME ${ANTIDOTE_RUNTIME_DIR}/antidote/data
+# --------
+# Antidote Features Configuration
+# Adjusting features for a node restart can have unexpected consequences
+# Decide on features before first starting and operating the AntidoteDB node
+# see config/sys.config.src for documentation
+# --------
+ENV ANTIDOTE_TXN_CERT "true"
+ENV ANTIDOTE_TXN_PROT "clocksi"
+ENV ANTIDOTE_RECOVER_FROM_LOG "true"
+ENV ANTIDOTE_META_DATA_ON_START "true"
+ENV ANTIDOTE_SYNC_LOG "false"
+ENV ANTIDOTE_ENABLE_LOGGING "true"
+ENV ANTIDOTE_AUTO_START_READ_SERVERS "true"
 
-ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["sh", "-c", "${ANTIDOTE_RUNTIME_DIR}/antidote/start_and_attach.sh"]
+# shell form of entrypoint
+ENTRYPOINT /antidote/bin/antidote foreground \
+    -riak_core handoff_port ${HANDOFF_PORT} \
+    -antidote txn_cert ${ANTIDOTE_TXN_CERT} \
+    -antidote txn_prot ${ANTIDOTE_TXN_PROT} \
+    -antidote recover_from_log ${ANTIDOTE_RECOVER_FROM_LOG} \
+    -antidote recover_metadata_on_start ${ANTIDOTE_RECOVER_METADATA_ON_START} \
+    -antidote sync_log ${ANTIDOTE_SYNC_LOG} \
+    -antidote enable_logging ${ANTIDOTE_ENABLE_LOGGING} \
+    -antidote auto_start_read_servers ${ANTIDOTE_AUTO_START_READ_SERVERS} \
+    -antidote logreader_port ${LOGREADER_PORT} \
+    -antidote pbsub_port ${PBSUB_PORT} \
+    -ranch pb_port ${PB_PORT} \
+    -antidote_stats metrics_port ${METRICS_PORT} \
+    -kernel inet_dist_listen_min ${ERLANG_DIST_PORT_MIN} \
+    -kernel inet_dist_listen_max ${ERLANG_DIST_PORT_MAX}

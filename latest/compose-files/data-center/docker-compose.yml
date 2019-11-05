@@ -16,7 +16,7 @@ x-antidote-features:
 services:
   dc1n1:
     container_name: dc1n1
-    image: antidote-latest:latest
+    image: antidotedb/antidote:0.2.1
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc1n1"
@@ -27,7 +27,7 @@ services:
 
   dc1n2:
     container_name: dc1n2
-    image: antidote-latest:latest
+    image: antidotedb/antidote:0.2.1
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc1n2"
@@ -38,7 +38,7 @@ services:
 
   dc1n3:
     container_name: dc1n3
-    image: antidote-latest:latest
+    image: antidotedb/antidote:0.2.1
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc1n3"
