@@ -17,7 +17,7 @@ RUN cp -R ${SRC_DIR}/_build/default/rel/antidote /antidote/
 # delete source
 RUN rm -rf ${SRC_DIR}
 # use short names instead of fully qualified names
-RUN sed -ie 's/-name/-sname/' /antidote/releases/0.2.1/vm.args.src
+RUN sed -ie 's/-name/-sname/' /antidote/releases/*/vm.args.src
 
 # Configurable antidote parameters
 

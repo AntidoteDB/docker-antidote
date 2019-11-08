@@ -1,0 +1,80 @@
+version: '3.4'
+
+# Specify feature configuration for all nodes at once
+# See AntidoteDB documentation on how to configure these features
+x-antidote-features:
+  &default-features
+  ANTIDOTE_TXN_CERT: "true"
+  ANTIDOTE_TXN_PROT: "clocksi"
+  ANTIDOTE_RECOVER_FROM_LOG: "true"
+  ANTIDOTE_META_DATA_ON_START: "true"
+  ANTIDOTE_SYNC_LOG: "false"
+  ANTIDOTE_ENABLE_LOGGING: "true"
+  ANTIDOTE_AUTO_START_READ_SERVERS: "true"
+
+
+services:
+  dc1n1:
+    container_name: dc1n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc1n1"
+    ports:
+      - "8101:8087"
+    volumes:
+      - ./dc1/node1:/antidote-data
+
+  dc1n2:
+    container_name: dc1n2
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc1n2"
+    ports:
+      - "8102:8087"
+    volumes:
+      - ./dc1/node2:/antidote-data
+
+  link-dc1:
+    image: erlang:21
+    volumes:
+      - .:/code
+    command: '/code/connect-dc1.erl'
+    depends_on:
+      - dc1n1
+      - dc1n2
+
+
+
+
+  dc2n1:
+    container_name: dc2n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc2n1"
+    ports:
+      - "8201:8087"
+    volumes:
+      - ./dc2/node1:/antidote-data
+
+  dc2n2:
+    container_name: dc2n2
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc2n2"
+    ports:
+      - "8202:8087"
+    volumes:
+      - ./dc2/node2:/antidote-data
+
+  link-dc2:
+    image: erlang:21
+    volumes:
+      - .:/code
+    command: '/code/connect-dc2.erl'
+    depends_on:
+      - dc2n1
+      - dc2n2
