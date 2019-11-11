@@ -1,16 +1,18 @@
 #!/usr/bin/env escript
 %%! -smp enable -sname erlshell -setcookie secret -hidden
 main(_Args) ->
+    timer:sleep(10000),
+
     {ok, Desc1} = getDesc(antidote@dc1n1),
     io:format("~n===============~nDescriptor DC1: ~p ~n===========~n", [Desc1]),
 
     {ok, Desc2} = getDesc(antidote@dc2n1),
     io:format("~n===============~nDescriptor DC2: ~p ~n===========~n", [Desc2]),
 
-    Response = rpc:call('antidote@dc1n1', antidote_dc_manager, subscribe_updates_from, [[Desc2]], 5000),
+    Response = rpc:call('antidote@dc1n1', antidote_dc_manager, subscribe_updates_from, [[Desc2]], 25000),
     io:format("~n===============~nResponse from DC1: ~p ~n===========~n", [Response]),
 
-    Response2 = rpc:call('antidote@dc2n1', antidote_dc_manager, subscribe_updates_from, [[Desc1]], 5000),
+    Response2 = rpc:call('antidote@dc2n1', antidote_dc_manager, subscribe_updates_from, [[Desc1]], 25000),
     io:format("~n===============~nResponse from DC2: ~p ~n===========~n", [Response2]).
 
 

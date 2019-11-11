@@ -16,7 +16,7 @@ x-antidote-features:
 services:
   dc1n1:
     container_name: dc1n1
-    image: antidotedb:local-build
+    image: antidotedb/antidote:0.2.1
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc1n1"
@@ -24,10 +24,12 @@ services:
       - "8101:8087"
       # metrics port
       - "8111:3001"
+    volumes:
+      - ./dc1/node1:/antidote-data
 
   dc1n2:
     container_name: dc1n2
-    image: antidotedb:local-build
+    image: antidotedb/antidote:0.2.1
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc1n2"
@@ -35,37 +37,63 @@ services:
       - "8102:8087"
         # metrics port
       - "8112:3001"
+    volumes:
+      - ./dc1/node2:/antidote-data
 
-  dc1n3:
-    container_name: dc1n3
-    image: antidotedb:local-build
-    environment:
-      << : *default-features
-      NODE_NAME: "antidote@dc1n3"
-    ports:
-      - "8103:8087"
-        # metrics port
-      - "8113:3001"
-
-  dc1n4:
-    container_name: dc1n4
-    image: antidotedb:local-build
-    environment:
-      << : *default-features
-      NODE_NAME: "antidote@dc1n4"
-    ports:
-      - "8104:8087"
-        # metrics port
-      - "8114:3001"
-
-  link-cluster:
+  link-cluster-1:
     image: erlang:21
     volumes:
       - .:/code
-    command: '/code/create-cluster.erl'
+    command: '/code/create-cluster-1.erl'
     depends_on:
       - dc1n1
       - dc1n2
-      - dc1n3
-      - dc1n4
 
+
+
+
+  dc2n1:
+    container_name: dc2n1
+    image: antidotedb/antidote:0.2.1
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc2n1"
+    ports:
+      - "8201:8087"
+      - "8211:3001"
+    volumes:
+      - ./dc2/node1:/antidote-data
+
+  dc2n2:
+    container_name: dc2n2
+    image: antidotedb/antidote:0.2.1
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc2n2"
+    ports:
+      - "8202:8087"
+      - "8212:3001"
+    volumes:
+      - ./dc2/node2:/antidote-data
+
+  link-cluster-2:
+    image: erlang:21
+    volumes:
+      - .:/code
+    command: '/code/create-cluster-2.erl'
+    depends_on:
+      - dc2n1
+      - dc2n2
+
+  link-dcs:
+    image: erlang:21
+    volumes:
+      - .:/code
+    command: '/code/connect-dcs.erl'
+    depends_on:
+      - dc1n1
+      - dc1n2
+      - dc2n1
+      - dc2n2
+      - link-cluster-1
+      - link-cluster-2
