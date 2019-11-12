@@ -24,37 +24,7 @@ services:
       SHORT_NAME: "true"
     ports:
       - "8101:8087"
-      # metrics port
-      - "8111:3001"
-    volumes:
-      - ./dc1/node1:/antidote-data
-
-  dc1n2:
-    container_name: dc1n2
-    image: antidotedb:local-build
-    environment:
-      << : *default-features
-      NODE_NAME: "antidote@dc1n2"
-      COOKIE: "secret"
-      SHORT_NAME: "true"
-    ports:
-      - "8102:8087"
-        # metrics port
-      - "8112:3001"
-    volumes:
-      - ./dc1/node2:/antidote-data
-
-  link-cluster-1:
-    image: erlang:21
-    volumes:
-      - .:/code
-    command: '/code/create-cluster-1.erl'
-    depends_on:
-      - dc1n1
-      - dc1n2
-
-
-
+      - "8102:3001"
 
   dc2n1:
     container_name: dc2n1
@@ -65,33 +35,20 @@ services:
       COOKIE: "secret"
       SHORT_NAME: "true"
     ports:
-      - "8201:8087"
-      - "8211:3001"
-    volumes:
-      - ./dc2/node1:/antidote-data
+      - "8101:8087"
+      - "8202:3001"
 
-  dc2n2:
-    container_name: dc2n2
+  dc3n1:
+    container_name: dc3n1
     image: antidotedb:local-build
     environment:
       << : *default-features
-      NODE_NAME: "antidote@dc2n2"
+      NODE_NAME: "antidote@dc3n1"
       COOKIE: "secret"
       SHORT_NAME: "true"
     ports:
-      - "8202:8087"
-      - "8212:3001"
-    volumes:
-      - ./dc2/node2:/antidote-data
-
-  link-cluster-2:
-    image: erlang:21
-    volumes:
-      - .:/code
-    command: '/code/create-cluster-2.erl'
-    depends_on:
-      - dc2n1
-      - dc2n2
+      - "8301:8087"
+      - "8302:3001"
 
   link-dcs:
     image: erlang:21
@@ -100,8 +57,5 @@ services:
     command: '/code/connect-dcs.erl'
     depends_on:
       - dc1n1
-      - dc1n2
       - dc2n1
-      - dc2n2
-      - link-cluster-1
-      - link-cluster-2
+      - dc3n1
