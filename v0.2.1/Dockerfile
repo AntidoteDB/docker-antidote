@@ -6,18 +6,19 @@ LABEL maintainer="ilyas@toumlilt.com"
 # Setup
 # --------
 
-ENV SRC_DIR "/usr/src/antidote"
+# git repostiroy to be used
+ENV ANTIDOTE_REPO "https://github.com/AntidoteDB/antidote"
 
-# copy antidote directory
-COPY . ${SRC_DIR}
-# make release
-RUN cd ${SRC_DIR} && make rel
-# copy release
-RUN cp -R ${SRC_DIR}/_build/default/rel/antidote /antidote/
-# delete source
-RUN rm -rf ${SRC_DIR}
+# TARGET can be a branch name or release tag
+ENV ANTIDOTE_REPO_TARGET "v0.2.1"
+
+# clone into antidote-src directory
+RUN git clone -b "${ANTIDOTE_REPO_TARGET}" --single-branch --depth 1 "${ANTIDOTE_REPO}" /antidote-src
+RUN cd /antidote-src && make rel
+RUN cp -R /antidote-src/_build/default/rel/antidote /antidote/
+RUN rm -rf antidote-src
 # use short names instead of fully qualified names
-RUN sed -ie 's/-name/-sname/' /antidote/releases/*/vm.args.src
+RUN sed -ie 's/-name/-sname/' /antidote/releases/0.2.1/vm.args.src
 
 # Configurable antidote parameters
 

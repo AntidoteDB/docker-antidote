@@ -43,12 +43,12 @@ For building the Docker image on your local machine, use the following commands:
 ```
 git clone https://github.com/AntidoteDB/docker-antidote
 cd docker-antidote/v0.2.0
-docker build -f Dockerfile -t antidotedb-local-build:0.2.0 .
+docker build -f Dockerfile -t antidotedb:local-build
 ```
 
 Then you can run it using:
 ```
-docker run -d --name antidote -p "8087:8087" antidotedb-local-build:0.2.0
+docker run -d --name antidote -p "8087:8087" antidotedb:local-build
 ```
 
 ### Using the local node
