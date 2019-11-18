@@ -10,7 +10,7 @@ LABEL maintainer="ilyas@toumlilt.com"
 ENV ANTIDOTE_REPO "https://github.com/AntidoteDB/antidote"
 
 # TARGET can be a branch name or release tag
-ENV ANTIDOTE_REPO_TARGET "master"
+ENV ANTIDOTE_REPO_TARGET "antidote-configuration"
 
 # clone into antidote-src directory
 RUN git clone -b "${ANTIDOTE_REPO_TARGET}" --single-branch --depth 1 "${ANTIDOTE_REPO}" /antidote-src
@@ -18,7 +18,7 @@ RUN cd /antidote-src && make rel
 RUN cp -R /antidote-src/_build/default/rel/antidote /antidote/
 RUN rm -rf antidote-src
 # use short names instead of fully qualified names
-RUN sed -ie 's/-name/-sname/' /antidote/releases/*/vm.args.src
+RUN sed -ie 's/-name/-sname/' /antidote/releases/0.4.0/vm.args.src
 
 # Configurable antidote parameters
 
@@ -47,8 +47,8 @@ ENV METRICS_PORT "3001"
 ENV NODE_NAME "antidote@antidote"
 ENV COOKIE "secret"
 
-# Expose protocol buffer client port, inter-dc communication ports (if needed) and metrics port (if needed)
-EXPOSE 8087 8085 8086 3001
+# Expose protocol buffer client port
+EXPOSE 8087
 
 # --------
 # Other Configuration
@@ -86,7 +86,7 @@ ENTRYPOINT /antidote/bin/antidote foreground \
     -antidote enable_logging ${ANTIDOTE_ENABLE_LOGGING} \
     -antidote auto_start_read_servers ${ANTIDOTE_AUTO_START_READ_SERVERS} \
     -antidote logreader_port ${LOGREADER_PORT} \
-    -antidote pbsub_port ${PBSUB_PORT} \
+    -antidote pubsub_port ${PBSUB_PORT} \
     -ranch pb_port ${PB_PORT} \
     -antidote_stats metrics_port ${METRICS_PORT} \
     -kernel inet_dist_listen_min ${ERLANG_DIST_PORT_MIN} \
