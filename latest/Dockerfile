@@ -12,13 +12,18 @@ ENV ANTIDOTE_REPO "https://github.com/AntidoteDB/antidote"
 # TARGET can be a branch name or release tag
 ENV ANTIDOTE_REPO_TARGET "master"
 
+# Choose to either use long names or short names for Erlang node via
+# env variable SHORT_NAME_PREFIX
+#  empty: long name
+#  s    : short name
+ENV SHORT_NAME_PREFIX "s"
+#ENV SHORT_NAME_PREFIX ""
+
 # clone into antidote-src directory
 RUN git clone -b "${ANTIDOTE_REPO_TARGET}" --single-branch --depth 1 "${ANTIDOTE_REPO}" /antidote-src
 RUN cd /antidote-src && make rel
 RUN cp -R /antidote-src/_build/default/rel/antidote /antidote/
 RUN rm -rf antidote-src
-# use short names instead of fully qualified names
-RUN sed -ie 's/-name/-sname/' /antidote/releases/*/vm.args.src
 
 # Configurable antidote parameters
 
