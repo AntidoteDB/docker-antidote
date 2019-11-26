@@ -8,6 +8,13 @@ LABEL maintainer="ilyas@toumlilt.com"
 
 ENV SRC_DIR "/usr/src/antidote"
 
+# Choose to either use long names or short names for Erlang node via
+# env variable SHORT_NAME_PREFIX
+#  empty: long name
+#  s    : short name
+ENV SHORT_NAME_PREFIX "s"
+#ENV SHORT_NAME_PREFIX ""
+
 # copy antidote directory
 COPY . ${SRC_DIR}
 # make release
@@ -16,8 +23,6 @@ RUN cd ${SRC_DIR} && make rel
 RUN cp -R ${SRC_DIR}/_build/default/rel/antidote /antidote/
 # delete source
 RUN rm -rf ${SRC_DIR}
-# use short names instead of fully qualified names
-RUN sed -ie 's/-name/-sname/' /antidote/releases/*/vm.args.src
 
 # Configurable antidote parameters
 
