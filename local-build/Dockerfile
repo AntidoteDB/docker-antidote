@@ -85,7 +85,7 @@ ENTRYPOINT /antidote/bin/antidote foreground \
     -antidote enable_logging ${ANTIDOTE_ENABLE_LOGGING} \
     -antidote auto_start_read_servers ${ANTIDOTE_AUTO_START_READ_SERVERS} \
     -antidote logreader_port ${LOGREADER_PORT} \
-    -antidote pbsub_port ${PBSUB_PORT} \
+    -antidote pubsub_port ${PBSUB_PORT} \
     -ranch pb_port ${PB_PORT} \
     -antidote_stats metrics_port ${METRICS_PORT} \
     -kernel inet_dist_listen_min ${ERLANG_DIST_PORT_MIN} \

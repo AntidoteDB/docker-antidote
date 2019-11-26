@@ -35,7 +35,7 @@ services:
       COOKIE: "secret"
       SHORT_NAME: "true"
     ports:
-      - "8101:8087"
+      - "8201:8087"
       - "8202:3001"
 
   link-dcs:
