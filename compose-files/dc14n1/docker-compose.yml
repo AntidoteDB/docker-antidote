@@ -1,0 +1,142 @@
+version: '3.4'
+
+# Specify feature configuration for all nodes at once
+# See AntidoteDB documentation on how to configure these features
+x-antidote-features:
+  &default-features
+  RING_SIZE: "2"
+  ANTIDOTE_TXN_CERT: "true"
+  ANTIDOTE_TXN_PROT: "clocksi"
+  ANTIDOTE_RECOVER_FROM_LOG: "true"
+  ANTIDOTE_META_DATA_ON_START: "true"
+  ANTIDOTE_SYNC_LOG: "false"
+  ANTIDOTE_ENABLE_LOGGING: "true"
+  ANTIDOTE_AUTO_START_READ_SERVERS: "true"
+
+
+services:
+  dc1n1:
+    container_name: dc1n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc1n1"
+      COOKIE: "secret"
+    ports:
+      - "8101:8087"
+      - "8102:3001"
+
+  dc2n1:
+    container_name: dc2n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc2n1"
+      COOKIE: "secret"
+
+  dc3n1:
+    container_name: dc3n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc3n1"
+      COOKIE: "secret"
+
+  dc4n1:
+    container_name: dc4n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc4n1"
+      COOKIE: "secret"
+  dc5n1:
+    container_name: dc5n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc5n1"
+      COOKIE: "secret"
+  dc6n1:
+    container_name: dc6n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc6n1"
+      COOKIE: "secret"
+  dc7n1:
+    container_name: dc7n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc7n1"
+      COOKIE: "secret"
+  dc8n1:
+    container_name: dc8n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc8n1"
+      COOKIE: "secret"
+  dc9n1:
+    container_name: dc9n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc9n1"
+      COOKIE: "secret"
+  dc10n1:
+    container_name: dc10n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc10n1"
+      COOKIE: "secret"
+  dc11n1:
+    container_name: dc11n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc11n1"
+      COOKIE: "secret"
+  dc12n1:
+    container_name: dc12n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc12n1"
+      COOKIE: "secret"
+  dc13n1:
+    container_name: dc13n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc13n1"
+      COOKIE: "secret"
+  dc14n1:
+    container_name: dc14n1
+    image: antidotedb:local-build
+    environment:
+      << : *default-features
+      NODE_NAME: "antidote@dc14n1"
+      COOKIE: "secret"
+
+  link-dcs:
+    image: erlang:21
+    volumes:
+      - .:/code
+    command: '/code/connect-dcs.erl'
+    depends_on:
+      - dc1n1
+      - dc2n1
+      - dc3n1
+      - dc4n1
+      - dc5n1
+      - dc6n1
+      - dc7n1
+      - dc8n1
+      - dc9n1
+      - dc10n1
+      - dc11n1
+      - dc12n1
+      - dc13n1
+      - dc14n1
