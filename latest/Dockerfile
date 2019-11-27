@@ -27,6 +27,15 @@ RUN rm -rf antidote-src
 
 # Configurable antidote parameters
 
+
+# --------
+# Ring Parameter
+# --------
+
+# ring size, should be an exponent of 2
+ENV RING_SIZE "2"
+
+
 # --------
 # Network
 # --------
@@ -54,6 +63,7 @@ ENV COOKIE "secret"
 
 # Expose protocol buffer client port
 EXPOSE 8087
+
 
 # --------
 # Other Configuration
@@ -83,6 +93,7 @@ ENV ANTIDOTE_AUTO_START_READ_SERVERS "true"
 # shell form of entrypoint
 ENTRYPOINT /antidote/bin/antidote foreground \
     -riak_core handoff_port ${HANDOFF_PORT} \
+    -riak_core ring_creation_size ${RING_SIZE} \
     -antidote txn_cert ${ANTIDOTE_TXN_CERT} \
     -antidote txn_prot ${ANTIDOTE_TXN_PROT} \
     -antidote recover_from_log ${ANTIDOTE_RECOVER_FROM_LOG} \

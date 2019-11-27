@@ -26,6 +26,15 @@ RUN rm -rf ${SRC_DIR}
 
 # Configurable antidote parameters
 
+
+# --------
+# Ring Parameter
+# --------
+
+# ring size, should be an exponent of 2
+ENV RING_SIZE "2"
+
+
 # --------
 # Network
 # --------
@@ -53,6 +62,7 @@ ENV COOKIE "secret"
 
 # Expose protocol buffer client port
 EXPOSE 8087
+
 
 # --------
 # Other Configuration
@@ -92,6 +102,7 @@ ENTRYPOINT /antidote/bin/antidote foreground \
     -antidote logreader_port ${LOGREADER_PORT} \
     -antidote pubsub_port ${PBSUB_PORT} \
     -ranch pb_port ${PB_PORT} \
+    -riak_core ring_creation_size ${RING_SIZE} \
     -antidote_stats metrics_port ${METRICS_PORT} \
     -kernel inet_dist_listen_min ${ERLANG_DIST_PORT_MIN} \
     -kernel inet_dist_listen_max ${ERLANG_DIST_PORT_MAX}
