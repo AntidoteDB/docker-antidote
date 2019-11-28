@@ -32,7 +32,7 @@ RUN rm -rf ${SRC_DIR}
 # --------
 
 # ring size, should be an exponent of 2
-ENV RING_SIZE "2"
+ENV RING_SIZE "16"
 
 
 # --------

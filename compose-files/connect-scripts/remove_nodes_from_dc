@@ -1,0 +1,29 @@
+#!/usr/bin/env escript
+%%! -smp enable -sname erlshell -setcookie secret -hidden
+
+
+main([]) ->
+    usage();
+main([_]) ->
+    usage();
+main(NodesStr) ->
+    Nodes = [list_to_atom(N) || N <- NodesStr],
+
+    io:format("~n===============~n Requesting nodes to leave their DC: ~p ~n===========~n", [Nodes]),
+
+    ok = rpc:call(Claimant, antidote_dc_manager, leave_dc, [], 60000).
+
+
+usage() ->
+    io:format("NAME~n"),
+    io:format("    remove_nodes_from_dc - requesting nodes to leave their DC~n~n"),
+    io:format("SYNOPSIS~n"),
+    io:format("    remove_nodes_from_dc NODE [NODE...] ~n~n"),
+    io:format("DESCRIPTION~n"),
+    io:format("    Remove nodes from their DC and exit.~n"),
+    io:format("    Ensure before usage that this script can connect to all required nodes (long vs short names, Erlang cookie).~n~n"),
+    io:format("    NODE: Erlang node name~n~n"),
+    io:format("EXAMPLES~n"),
+    io:format("    remove_nodes_from_dc antidote@dc1n2 antidote@dc1n3~n"),
+    io:format("         Request nodes dc1n2 and dc1n3 to leave their data center and exit~n").
+
