@@ -73,12 +73,5 @@ services:
     restart: on-failure
     volumes:
       - ../connect-scripts:/code
-    command: '/code/add_nodes_to_dc antidote@dc1n1 antidote@dc1n2'
+    command: '/code/add_nodes_to_dc antidote@dc2n1 antidote@dc2n2'
 
-
-  link-dcs:
-    image: erlang:21 
-    restart: on-failure
-    volumes:
-      - ../connect-scripts:/code
-    command: '/code/join_dcs antidote@dc1n1 antidote@dc2n1'
