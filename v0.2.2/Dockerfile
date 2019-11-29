@@ -10,7 +10,7 @@ LABEL maintainer="ilyas@toumlilt.com"
 ENV ANTIDOTE_REPO "https://github.com/AntidoteDB/antidote"
 
 # TARGET can be a branch name or release tag
-ENV ANTIDOTE_REPO_TARGET "master"
+ENV ANTIDOTE_REPO_TARGET "v0.2.2"
 
 # Choose to either use long names or short names for Erlang node via
 # env variable SHORT_NAME_PREFIX

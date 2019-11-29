@@ -8,18 +8,12 @@
 
 Start a local node with the command
 ```
-docker run -d --name antidote -p "8087:8087" antidotedb/antidote:latest
+docker run -d --name antidote -p "8087:8087" antidotedb/antidote:0.2.2
 ```
 
 This should fetch the Antidote image automatically. 
 
-To update Antidote, execute
-
-```
-docker pull antidotedb/antidote:latest
-```
-
-## Using the node
+## Using the local node
 
 Wait until Antidote is ready. The current log can be inspected with `docker logs antidote`.
 

@@ -4,6 +4,7 @@ version: '3.4'
 # See AntidoteDB documentation on how to configure these features
 x-antidote-features:
   &default-features
+  RING_SIZE: "4"
   ANTIDOTE_TXN_CERT: "true"
   ANTIDOTE_TXN_PROT: "clocksi"
   ANTIDOTE_RECOVER_FROM_LOG: "true"
@@ -11,6 +12,7 @@ x-antidote-features:
   ANTIDOTE_SYNC_LOG: "false"
   ANTIDOTE_ENABLE_LOGGING: "true"
   ANTIDOTE_AUTO_START_READ_SERVERS: "true"
+  COOKIE: "secret"
 
 
 services:
@@ -20,14 +22,10 @@ services:
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc1n1"
-      COOKIE: "secret"
-      SHORT_NAME: "true"
     ports:
       - "8101:8087"
       # metrics port
       - "8111:3001"
-    volumes:
-      - ./dc1/node1:/antidote-data
 
   dc1n2:
     container_name: dc1n2
@@ -35,23 +33,17 @@ services:
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc1n2"
-      COOKIE: "secret"
-      SHORT_NAME: "true"
     ports:
       - "8102:8087"
         # metrics port
       - "8112:3001"
-    volumes:
-      - ./dc1/node2:/antidote-data
 
   link-cluster-1:
     image: erlang:21
+    restart: on-failure
     volumes:
-      - .:/code
-    command: '/code/create-cluster-1.erl'
-    depends_on:
-      - dc1n1
-      - dc1n2
+      - ../connect-scripts:/code
+    command: '/code/add_nodes_to_dc antidote@dc1n1 antidote@dc1n2'
 
 
 
@@ -62,13 +54,9 @@ services:
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc2n1"
-      COOKIE: "secret"
-      SHORT_NAME: "true"
     ports:
       - "8201:8087"
       - "8211:3001"
-    volumes:
-      - ./dc2/node1:/antidote-data
 
   dc2n2:
     container_name: dc2n2
@@ -76,32 +64,14 @@ services:
     environment:
       << : *default-features
       NODE_NAME: "antidote@dc2n2"
-      COOKIE: "secret"
-      SHORT_NAME: "true"
     ports:
       - "8202:8087"
       - "8212:3001"
-    volumes:
-      - ./dc2/node2:/antidote-data
 
   link-cluster-2:
     image: erlang:21
+    restart: on-failure
     volumes:
-      - .:/code
-    command: '/code/create-cluster-2.erl'
-    depends_on:
-      - dc2n1
-      - dc2n2
+      - ../connect-scripts:/code
+    command: '/code/add_nodes_to_dc antidote@dc2n1 antidote@dc2n2'
 
-  link-dcs:
-    image: erlang:21
-    volumes:
-      - .:/code
-    command: '/code/connect-dcs.erl'
-    depends_on:
-      - dc1n1
-      - dc1n2
-      - dc2n1
-      - dc2n2
-      - link-cluster-1
-      - link-cluster-2
