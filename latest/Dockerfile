@@ -69,6 +69,10 @@ EXPOSE 8087
 # Other Configuration
 # --------
 
+# verbosity of the logging
+# debug, info, notice, warning, error, alert, critical
+ENV DEBUG_LOGGER_LEVEL "info"
+
 # where the logs and data are stored and exposed
 ENV ROOT_DIR_PREFIX "/antidote-data/"
 ENV DATA_DIR_PREFIX "data/"
@@ -105,5 +109,6 @@ ENTRYPOINT /antidote/bin/antidote foreground \
     -antidote pubsub_port ${PBSUB_PORT} \
     -ranch pb_port ${PB_PORT} \
     -antidote_stats metrics_port ${METRICS_PORT} \
+    -kernel logger_level ${DEBUG_LOGGER_LEVEL} \
     -kernel inet_dist_listen_min ${ERLANG_DIST_PORT_MIN} \
     -kernel inet_dist_listen_max ${ERLANG_DIST_PORT_MAX}
