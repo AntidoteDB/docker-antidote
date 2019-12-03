@@ -68,6 +68,10 @@ EXPOSE 8087
 # Other Configuration
 # --------
 
+# verbosity of the logging
+# debug, info, notice, warning, error, alert, critical
+ENV DEBUG_LOGGER_LEVEL "notice"
+
 # where the logs and data are stored and exposed
 ENV ROOT_DIR_PREFIX "/antidote-data/"
 ENV DATA_DIR_PREFIX "data/"
