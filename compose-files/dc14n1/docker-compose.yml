@@ -118,10 +118,8 @@ services:
       NODE_NAME: "antidote@dc14n1"
 
   link-dcs:
-    image: erlang:21
-    volumes:
-      - .:/code
-    command: '/code/connect-dcs.erl'
+    image: peterzel/antidote-connect
+    command: ['--connectDcs', 'dc1n1:8087','dc2n1:8087','dc3n1:8087','dc4n1:8087','dc5n1:8087','dc6n1:8087','dc7n1:8087','dc8n1:8087','dc9n1:8087','dc10n1:8087','dc11n1:8087','dc12n1:8087','dc13n1:8087','dc14n1:8087',]
     depends_on:
       - dc1n1
       - dc2n1

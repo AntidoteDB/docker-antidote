@@ -37,8 +37,8 @@ services:
       - "8202:3001"
 
   link-dcs:
-    image: erlang:21
-    restart: on-failure
-    volumes:
-      - ../connect-scripts:/code
-    command: '/code/join_dcs antidote@dc1n1 antidote@dc2n1'
+    image: peterzel/antidote-connect
+    command: ['--connectDcs', 'dc1n1:8087', 'dc2n1:8087']
+    depends_on:
+      - dc1n1
+      - dc2n1

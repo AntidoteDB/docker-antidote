@@ -24,6 +24,11 @@ services:
       NODE_NAME: "antidote@dc1n1"
     ports:
       - "8101:8087"
+     # metrics
+     #- "8111:3001"
+    volumes:
+     #persist data
+     #- ./dc1/node1:/antidote-data
 
   dc1n2:
     container_name: dc1n2
@@ -43,9 +48,10 @@ services:
     ports:
       - "8103:8087"
 
-  link:
-    image: erlang:21
-    restart: on-failure
-    volumes:
-      - ../connect-scripts:/code
-    command: '/code/add_nodes_to_dc antidote@dc1n1 antidote@dc1n2 antidote@dc1n3'
+  link-cluster:
+    image: peterzel/antidote-connect
+    command: ['--createDC', 'dc1n1:8087', 'antidote@dc1n2']
+    depends_on:
+      - dc1n1
+      - dc1n2
+      - dc1n3

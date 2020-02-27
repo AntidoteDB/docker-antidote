@@ -39,12 +39,11 @@ services:
       - "8112:3001"
 
   link-cluster-1:
-    image: erlang:21
-    restart: on-failure
-    volumes:
-      - ../connect-scripts:/code
-    command: '/code/add_nodes_to_dc antidote@dc1n1 antidote@dc1n2'
-
+    image: peterzel/antidote-connect
+    command: ['--createDc', 'dc1n1:8087', 'antidote@dc1n2']
+    depends_on:
+      - dc1n1
+      - dc1n2
 
 
 
@@ -68,10 +67,21 @@ services:
       - "8202:8087"
       - "8212:3001"
 
-  link-cluster-2:
-    image: erlang:21
-    restart: on-failure
-    volumes:
-      - ../connect-scripts:/code
-    command: '/code/add_nodes_to_dc antidote@dc2n1 antidote@dc2n2'
+  link-cluster-1:
+    image: peterzel/antidote-connect
+    command: ['--createDc', 'dc2n1:8087', 'antidote@dc2n2']
+    depends_on:
+      - dc2n1
+      - dc2n2
 
+
+  link-dcs:
+    image: peterzel/antidote-connect
+    command: ['--connectDcs', 'dc1n1:8087', 'dc2n1:8087']
+    depends_on:
+      - dc1n1
+      - dc1n2
+      - dc2n1
+      - dc2n2
+      - link-cluster-1
+      - link-cluster-2
