@@ -2,8 +2,7 @@ version: '3.4'
 
 # Specify feature configuration for all nodes at once
 # See AntidoteDB documentation on how to configure these features
-x-antidote-features:
-  &default-features
+x-antidote-features: &default-features
   RING_SIZE: "2"
   ANTIDOTE_TXN_CERT: "true"
   ANTIDOTE_TXN_PROT: "clocksi"
@@ -48,7 +47,7 @@ services:
 
   link-dcs:
     image: peterzel/antidote-connect
-    command: ['--connectDcs', 'dc1n1:8087', 'antidote@dc2n1', 'antidote@dc3n1']
+    command: ['--connectDcs', 'dc1n1:8087', 'dc2n1:8087', 'dc3n1:8087']
     depends_on:
       - dc1n1
       - dc2n1

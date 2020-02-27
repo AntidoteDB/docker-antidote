@@ -67,7 +67,7 @@ services:
       - "8202:8087"
       - "8212:3001"
 
-  link-cluster-1:
+  link-cluster-2:
     image: peterzel/antidote-connect
     command: ['--createDc', 'dc2n1:8087', 'antidote@dc2n2']
     depends_on:

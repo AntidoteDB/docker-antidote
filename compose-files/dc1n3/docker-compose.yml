@@ -26,7 +26,7 @@ services:
       - "8101:8087"
      # metrics
      #- "8111:3001"
-    volumes:
+   #volumes:
      #persist data
      #- ./dc1/node1:/antidote-data
 
@@ -50,7 +50,7 @@ services:
 
   link-cluster:
     image: peterzel/antidote-connect
-    command: ['--createDC', 'dc1n1:8087', 'antidote@dc1n2']
+    command: ['--createDc', 'dc1n1:8087', 'antidote@dc1n2', 'antidote@dc1n3']
     depends_on:
       - dc1n1
       - dc1n2
