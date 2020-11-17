@@ -8,11 +8,11 @@ The goal is to provide images for a few last Antidote releases (currently 0.2.0 
 ## Supported tags and respective `Dockerfile` links
 
 The AntidoteDB images come in many flavors, each designed for a specific use case.
-- `antidotedb:latest`: the most recent AntidoteDB version (unstable).
-- `antidotedb:stable`: the most recent stable official release (recommended).
-- `antidotedb:alpine`: the most recent lightweight alpine release (stable).
-- `antidotedb:<release>`: Docker image for a specific <release> version of AntidoteDB, official releases are described on [AntidoteDB Github repository][AntidoteDB-github-releases-link].
-- `antidotedb:<release>-alpine`: This variant, available for each official release, is recommended when final image size being as small as possible is desired. The main caveat to note is that it use [musl libc](http://www.musl-libc.org/) instead of [glibc and friends](http://www.etalabs.net/compare_libcs.html), so certain software might run into issues depending on the depth of their libs requirements. However, most software does not have an issue with this, so this variant is usually a very safe choice. See [this Hacker News comment thread](https://news.ycombinator.com/item?id=10782897) for more discussion of the issues that might arise and some pro/con comparisons of using Alpine-based images.
+- `antidotedb/antidote:latest`: the most recent AntidoteDB version (unstable).
+- `antidotedb/antidote:stable`: the most recent stable official release (recommended).
+- `antidotedb/antidote:alpine`: the most recent lightweight alpine release (stable).
+- `antidotedb/antidote:<release>`: Docker image for a specific <release> version of AntidoteDB, official releases are described on [AntidoteDB Github repository][AntidoteDB-github-releases-link].
+- `antidotedb/antidote:<release>-alpine`: This variant, available for each official release, is recommended when final image size being as small as possible is desired. The main caveat to note is that it use [musl libc](http://www.musl-libc.org/) instead of [glibc and friends](http://www.etalabs.net/compare_libcs.html), so certain software might run into issues depending on the depth of their libs requirements. However, most software does not have an issue with this, so this variant is usually a very safe choice. See [this Hacker News comment thread](https://news.ycombinator.com/item?id=10782897) for more discussion of the issues that might arise and some pro/con comparisons of using Alpine-based images.
 
 Supported tags and respective `Dockefile` github links:
 - [`latest`](https://github.com/AntidoteDB/docker-antidote/blob/master/latest/Dockerfile): the most recent AntidoteDB version (Unstable).
