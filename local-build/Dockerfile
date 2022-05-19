@@ -1,4 +1,4 @@
-FROM erlang:21
+FROM erlang:24
 
 LABEL maintainer="ilyas@toumlilt.com"
 
